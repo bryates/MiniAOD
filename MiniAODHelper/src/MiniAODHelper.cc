@@ -1335,19 +1335,19 @@ MiniAODHelper::isGoodJet(const pat::Jet& iJet, const float iMinPt, const float i
     loose = (
 		  iJet.neutralHadronEnergyFraction() < 0.99 &&
 		  iJet.chargedEmEnergyFraction() < 0.99 &&
-		  iJet.neutralEmEnergyFraction() < 0.99 &&
-		  iJet.numberOfDaughters() > 1
+		  iJet.neutralEmEnergyFraction() < 0.99// &&
+		  //iJet.numberOfDaughters() > 1
 		  );
     if ( fabs(iJet.eta())<=2.7 )
     {
         // https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID13TeVRun2017
         tight = ( iJet.neutralHadronEnergyFraction() < 0.9 &&
-            iJet.neutralEmEnergyFraction() < 0.9 &&
-            (iJet.neutralMultiplicity()+iJet.chargedMultiplicity())>1 );
+            iJet.neutralEmEnergyFraction() < 0.9);// &&
+            //(iJet.neutralMultiplicity()+iJet.chargedMultiplicity())>1 );
         
         if( fabs(iJet.eta())<=2.4 )
         {
-            bool etaLT2p4reqs = iJet.chargedHadronEnergyFraction() > 0.0 && iJet.chargedMultiplicity() > 0;           
+            bool etaLT2p4reqs = iJet.chargedHadronEnergyFraction() > 0.0;// && iJet.chargedMultiplicity() > 0;           
             loose = loose && etaLT2p4reqs;
             tight = tight && etaLT2p4reqs;
         }
