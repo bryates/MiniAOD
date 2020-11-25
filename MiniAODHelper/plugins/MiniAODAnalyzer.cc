@@ -521,7 +521,7 @@ MiniAODAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
   std::vector<pat::Muon> selectedMuons;
   if( pfmuons.isValid() ){
-    selectedMuons = miniAODhelper.GetSelectedMuons(*pfmuons, 30., muonID::muonTight);
+    selectedMuons = miniAODhelper.GetSelectedMuons(*pfmuons, 10., muonID::muonTight, coneSize::R03, corrType::rhoEA);
 
     for( std::vector<pat::Muon>::const_iterator pfmu = pfmuons->begin(); pfmu!=pfmuons->end(); ++pfmu ){
       int ncut = 0;
