@@ -336,7 +336,7 @@ MiniAODHelper::GetSelectedElectrons(const std::vector<pat::Electron>& inputElect
 }
 
 std::vector<pat::Tau>
-MiniAODHelper::GetSelectedTaus(const std::vector<pat::Tau>& inputTaus, const float iMinPt, const tau::ID id){
+MiniAODHelper::GetSelectedTaus(const std::vector<pat::Tau>& inputTaus, const float iMinPt, const tauID::tauID id){
 
   CheckSetUp();
 
@@ -1263,18 +1263,18 @@ MiniAODHelper::isGoodElectron(const pat::Electron& iElectron, const float iMinPt
 }
 
 bool
-MiniAODHelper::isGoodTau(const pat::Tau& tau, const float min_pt, const tau::ID id)
+MiniAODHelper::isGoodTau(const pat::Tau& tau, const float min_pt, const tauID::tauID id)
 {
   CheckVertexSetUp();
 
   bool passesIsolation = false;
   bool passesID = tau.tauID("decayModeFindingNewDMs") >= .5;
 
-  /*
   if (!tau.leadChargedHadrCand().isAvailable())
      return false;
 
   auto track = tau.leadChargedHadrCand()->bestTrack();
+  /*
   if (!track)
      return false;
   */
@@ -1288,25 +1288,28 @@ MiniAODHelper::isGoodTau(const pat::Tau& tau, const float min_pt, const tau::ID 
                           //(fabs(track->dz(vertex.position())) <= 0.2);
 
   switch (id) {
-     case tau::nonIso:
+     case tauID::tauRaw:
+        passesIsolation = true;
+        break;
+     case tauID::tauNonIso:
         passesID = passesID and \
                    tau.tauID("againstMuonLoose3") >= .5 and \
                    tau.tauID("againstElectronVLooseMVA6") >= .5;
         passesIsolation = true;
         break;
-     case tau::loose:
+     case tauID::tauLoose:
         passesID = passesID and \
                    tau.tauID("againstMuonLoose3") >= .5 and \
                    tau.tauID("againstElectronVLooseMVA6") >= .5;
         passesIsolation = tau.tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") >= .5;
         break;
-     case tau::medium:
+     case tauID::tauMedium:
         passesID = passesID and \
                    tau.tauID("againstMuonLoose3") >= .5 and \
                    tau.tauID("againstElectronLooseMVA6") >= .5;
         passesIsolation = tau.tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") >= .5;
         break;
-     case tau::tight:
+     case tauID::tauTight:
         passesID = passesID and \
                    tau.tauID("againstMuonTight3") >= .5 and \
                    tau.tauID("againstElectronMediumMVA6") >= .5;
