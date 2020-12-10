@@ -1274,9 +1274,9 @@ MiniAODHelper::isGoodTau(const pat::Tau& tau, const float min_pt, const tauID::t
      return false;
 
   auto track = tau.leadChargedHadrCand()->bestTrack();
-  /*
   if (!track)
      return false;
+  /*
   */
 
   // systematics are only defined for p_T > 20
@@ -1317,8 +1317,11 @@ MiniAODHelper::isGoodTau(const pat::Tau& tau, const float min_pt, const tauID::t
         break;
   }
 
-  passesID = true;
-  passesIsolation = true;
+  //passesID = true;
+  //passesIsolation = true;
+  passesID = tau.tauID("decayModeFindingNewDMs") >= .5;
+  //passesIsolation = tau.tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") >= .5;
+  passesIsolation = tau.tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") || tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT2015") || tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT") || tau.tauID("byVLooseIsolationMVArun2v1DBdR03oldDMwLT") || tau.tauID("byVVLooseIsolationMVArun2v1DBoldDMwLT") || tau.tauID("byVVLooseIsolationMVArun2v1DBoldDMwLT2017v2") || tau.tauID("byVVLooseIsolationMVArun2v1DBnewDMwLT2017v2");
   return passesKinematics && passesIsolation && passesID;
 }
 
