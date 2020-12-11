@@ -1282,10 +1282,10 @@ MiniAODHelper::isGoodTau(const pat::Tau& tau, const float min_pt, const tauID::t
   // systematics are only defined for p_T > 20
   bool passesKinematics = \
                           (tau.pt() >= std::max(20.f, min_pt)) and \
-                          (fabs(tau.eta()) <= 2.3);// and \
-                          //(track->pt() >= 5.) and \
-                          //(fabs(track->dxy(vertex.position())) < 1000.) and \
-                          //(fabs(track->dz(vertex.position())) <= 0.2);
+                          (fabs(tau.eta()) <= 2.3) and \
+                          (track->pt() >= 5.) and \
+                          (fabs(track->dxy(vertex.position())) < 1000.) and \
+                          (fabs(track->dz(vertex.position())) <= 0.2);
 
   switch (id) {
      case tauID::tauRaw:
@@ -1321,7 +1321,13 @@ MiniAODHelper::isGoodTau(const pat::Tau& tau, const float min_pt, const tauID::t
   //passesIsolation = true;
   passesID = tau.tauID("decayModeFindingNewDMs") >= .5;
   //passesIsolation = tau.tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") >= .5;
-  passesIsolation = tau.tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") || tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT2015") || tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT") || tau.tauID("byVLooseIsolationMVArun2v1DBdR03oldDMwLT") || tau.tauID("byVVLooseIsolationMVArun2v1DBoldDMwLT") || tau.tauID("byVVLooseIsolationMVArun2v1DBoldDMwLT2017v2") || tau.tauID("byVVLooseIsolationMVArun2v1DBnewDMwLT2017v2");
+  passesIsolation = tau.tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") ||
+                    //tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT2015") ||
+                    tau.tauID("byVLooseIsolationMVArun2v1DBnewDMwLT") ||
+                    tau.tauID("byVLooseIsolationMVArun2v1DBdR03oldDMwLT");
+                    //tau.tauID("byVVLooseIsolationMVArun2v1DBoldDMwLT") ||
+                    //tau.tauID("byVVLooseIsolationMVArun2v1DBoldDMwLT2017v2") ||
+                    //tau.tauID("byVVLooseIsolationMVArun2v1DBnewDMwLT2017v2");
   return passesKinematics && passesIsolation && passesID;
 }
 
